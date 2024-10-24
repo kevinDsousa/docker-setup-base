@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# Construir a imagem de configuração
-docker build -t configs -f configs/Dockerfile.config .
+# Cria a rede se não existir
+docker network create --subnet=192.168.5.0/24 developer-network || echo "Rede já existe."
 
-# (Opcional) Construir a imagem para os projetos
-docker build -t projects -f Dockerfile.projects .
-
-# Exemplo: Se você quiser construir uma imagem final que use as anteriores
+# Construir a imagem principal
 docker build -t docker-setup-base -f Dockerfile .
 
 # Adicionando uma mensagem de conclusão
