@@ -12,6 +12,7 @@ echo "Usuário $usuario criado com sucesso."
 # Configura o SSH
 mkdir -p /var/run/sshd
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 # Inicia o SSH
 /usr/sbin/sshd
