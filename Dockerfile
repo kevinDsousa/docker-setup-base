@@ -33,7 +33,11 @@ RUN chmod +x /usr/local/bin/configure_ssh.sh
 # Segundo estágio: Execução
 FROM ubuntu:latest
 
-# Instala o openssh-server no estágio final também
+# Argumentos para configurar o Git
+ARG GIT_EMAIL
+ARG GIT_USERNAME
+
+# Instala o openssh-server e git no estágio final
 RUN apt-get update && apt-get install -y openssh-server git && mkdir /var/run/sshd
 
 # Expor a porta 22 para o SSH
@@ -52,6 +56,10 @@ RUN mkdir -p /home/developer/projects
 RUN cd /home/developer/projects \
     && git clone https://github.com/kevinDsousa/Nautilus_Control_Front.git \
     && git clone https://github.com/kevinDsousa/Nautilus_Control_Api.git
+
+# Configura o Git com as informações fornecidas pelo usuário
+RUN git config --global user.email "$GIT_EMAIL" && \
+    git config --global user.name "$GIT_USERNAME"
 
 # Comando para executar o script ao iniciar o contêiner
 CMD ["/usr/local/bin/configure_ssh.sh"]

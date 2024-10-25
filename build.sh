@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Solicita o email e o username do GitHub
+read -p "Digite seu email do GitHub: " github_email
+read -p "Digite seu username do GitHub: " github_username
+
 # Remove redes não utilizadas
 docker network prune -f
 
@@ -13,8 +17,8 @@ if [ "$(docker ps -a -q -f name=developer-container)" ]; then
     echo "Contêiner removido."
 fi
 
-# Construir a imagem principal
-docker build -t docker-setup-base -f Dockerfile .
+# Construir a imagem principal, passando variáveis de ambiente para o Dockerfile
+docker build --build-arg GIT_EMAIL="$github_email" --build-arg GIT_USERNAME="$github_username" -t docker-setup-base -f Dockerfile .
 
 # Adicionando uma mensagem de conclusão
 echo "Construção concluída!"
